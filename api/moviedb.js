@@ -24,7 +24,7 @@ const apiCall = async (endpoint, params) => {
 
 export const fetchGenres = async () => {
   const response = await fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=d45225bbacae93aeefbbc72e536dbc7c",
+    `${baseUrl}/genre/movie/list?api_key=${apiKey}`,
     {
       method: "GET",
       headers: {
@@ -35,9 +35,28 @@ export const fetchGenres = async () => {
   const { genres } = await response.json();
   let genreMap = new Map();
   genres.map((item) => genreMap.set(item.id, item.name));
-
   return genreMap;
 };
+
+export const fetchCast = async (id) => {
+  const response = await fetch(
+    `${baseUrl}/movie/${id}/credits?api_key=${apiKey}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const { cast } = await response.json();
+  return cast;
+};
+
+export const fetchPeople = async (id) => {
+  const response = await fetch(`${baseUrl}/person/${id}?api_key=${apiKey}`);
+  return await response.json();
+};
+
 export const fetchTrendingMovies = () => {
   return apiCall(trendingMoviesEndPoint);
 };
@@ -46,4 +65,47 @@ export const fetchUpcomingMovies = () => {
 };
 export const fetchTopRatedMovies = () => {
   return apiCall(topRatedMoviesEndPoint);
+};
+
+export const fetchPersonMovies = async (id) => {
+  const response = await fetch(
+    `${baseUrl}/person/${id}/movie_credits?api_key=${apiKey}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const { cast } = await response.json();
+  return cast;
+};
+
+export const fetchSimilarMoviesApi = async (id) => {
+  const response = await fetch(
+    `${baseUrl}/movie/${id}/similar?api_key=${apiKey}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const { results } = await response.json();
+  return results;
+};
+
+export const fetchSearchResults = async (query) => {
+  const response = await fetch(
+    `${baseUrl}/search/movie?query=${query}&api_key=${apiKey}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const { results } = await response.json();
+  console.log(results);
+  return results;
 };
