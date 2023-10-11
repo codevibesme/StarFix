@@ -26,7 +26,6 @@ export default function TrendingMovies({ data }) {
 
 const MovieCard = ({ item }) => {
   const navigation = useNavigation();
-  console.log(imageUrl + item.poster_path);
   return (
     <Pressable onPress={() => navigation.navigate("Movie", item)}>
       {/* <Text className="text-white">Movie</Text>

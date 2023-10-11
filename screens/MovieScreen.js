@@ -28,9 +28,9 @@ const topMargin = ios ? "" : "mt-3";
 
 export default function MovieScreen() {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [cast, setCast] = useState([1, 2, 3, 4]);
+  const [cast, setCast] = useState([]);
   const [genres, setGenres] = useState(new Map());
-  const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4]);
+  const [similarMovies, setSimilarMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const { params: item } = useRoute();
@@ -51,13 +51,15 @@ export default function MovieScreen() {
   };
   useEffect(() => {
     // call the api
+    setCast([]);
+    setSimilarMovies([]);
     setLoading(true);
     setTimeout(() => {
       fetchCastMovies();
       fetchGenresMovies();
       fetchSimilarMovies();
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, [item]);
 
   return (
@@ -137,13 +139,15 @@ export default function MovieScreen() {
               {item.overview}
             </Text>
           </View>
-          <Cast cast={cast} navigation={navigation} />
+          {cast.length > 0 && <Cast cast={cast} navigation={navigation} />}
           {/* Similar Movies  */}
-          <MovieList
-            title="Similar Movies"
-            data={similarMovies}
-            hideSeeAll={true}
-          />
+          {similarMovies.length > 0 && (
+            <MovieList
+              title="Similar Movies"
+              data={similarMovies}
+              hideSeeAll={true}
+            />
+          )}
         </ScrollView>
       )}
     </>

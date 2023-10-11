@@ -36,7 +36,7 @@ export default function Person() {
     setPersonMovies(movieResponse);
   };
   useEffect(() => {
-    setTimeout(() => fetchPeopleMovies(), 2000);
+    setTimeout(() => fetchPeopleMovies(), 1000);
   }, [person]);
 
   return (
