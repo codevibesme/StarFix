@@ -16,7 +16,10 @@ import { styles } from "../theme";
 import { LinearGradient } from "expo-linear-gradient";
 import Cast from "../components/Cast";
 import MovieList from "../components/MovieList";
+import { imageUrl } from "../constants/index.js";
+
 var { width, height } = Dimensions.get("window");
+
 const ios = Platform.OS == "ios";
 
 const topMargin = ios ? "" : "mt-3";
@@ -24,6 +27,7 @@ const topMargin = ios ? "" : "mt-3";
 export default function MovieScreen() {
   const [isFavorite, setIsFavorite] = useState(false);
   const [cast, setCast] = useState([1, 2, 3, 4]);
+  const [genres, setGenres] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([1, 2, 3, 4]);
   const [loading, setLoading] = useState(false);
 
@@ -63,7 +67,8 @@ export default function MovieScreen() {
         </SafeAreaView>
         <View>
           <Image
-            source={require("../assets/images/moviePoster1.png")}
+            // source={require("../assets/images/moviePoster1.png")}
+            source={{ uri: `${imageUrl}${item.poster_path}` }}
             style={{ width: width, height: height * 0.55 }}
           />
           <LinearGradient
@@ -79,11 +84,11 @@ export default function MovieScreen() {
       <View style={{ marginTop: -(height * 0.09) }} className="space-y-3">
         {/*title*/}
         <Text className="text-white text-center text-3xl font-bold tracking-wider">
-          {movieName}
+          {item.title}
         </Text>
         {/* Release Date, status runtime */}
         <Text className=" text-neutral-400 font-semibold text-base text-center">
-          Released &#x2022; 2020 &#x2022; 170 min
+          {item.release_date} &#x2022; {item.original_language}
         </Text>
         {/* genres */}
         <View className="flex-row justify-center mx-4 space-x-2">

@@ -1,25 +1,19 @@
 import { View, Text, Pressable, Dimensions, Image } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Carousel from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
+import { fetchTrendingMovies } from "../api/moviedb";
+import { imageUrl } from "../constants/index";
 
 var { width, height } = Dimensions.get("window");
 
 export default function TrendingMovies({ data }) {
-  const navigation = useNavigation();
-
-  const handleClick = (item) => {
-    navigation.navigate("Movie", item);
-  };
-
   return (
     <View className="mb-8">
       <Text className="text-white text-xl mx-4 mb-5">Trending</Text>
       <Carousel
         data={data}
-        renderItem={(item) => (
-          <MovieCard item={item} handleClick={handleClick} />
-        )}
+        renderItem={({ index, item }) => <MovieCard key={index} item={item} />}
         firstItem={1}
         inactiveSlideOpacity={0.6}
         sliderWidth={width}
@@ -30,13 +24,16 @@ export default function TrendingMovies({ data }) {
   );
 }
 
-const MovieCard = ({ item, handleClick }) => {
+const MovieCard = ({ item }) => {
+  const navigation = useNavigation();
+  console.log(imageUrl + item.poster_path);
   return (
-    <Pressable onPress={(item) => handleClick(item)}>
+    <Pressable onPress={() => navigation.navigate("Movie", item)}>
       {/* <Text className="text-white">Movie</Text>
        */}
       <Image
-        source={require("../assets/images/moviePoster1.png")}
+        // source={require("../assets/images/moviePoster1.png")}
+        source={{ uri: `${imageUrl}${item.poster_path}` }}
         style={{
           width: width * 0.6,
           height: height * 0.4,

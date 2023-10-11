@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -19,6 +19,12 @@ import MovieList from "../components/MovieList";
 import { useNavigation } from "@react-navigation/native";
 import LoadingScreen from "./LoadingScreen";
 
+import {
+  fetchTrendingMovies,
+  fetchTopRatedMovies,
+  fetchUpcomingMovies,
+} from "../api/moviedb";
+
 const ios = Platform.OS == "ios";
 export default function HomeScreen() {
   const [trending, setTrending] = useState([1, 2, 3]);
@@ -27,6 +33,25 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
+
+  const fetchTrending = async () => {
+    const response = await fetchTrendingMovies();
+    setTrending(response);
+  };
+  const fetchTopRated = async () => {
+    const response = await fetchTopRatedMovies();
+    setTopRated(response);
+  };
+  const fetchUpcoming = async () => {
+    const response = await fetchUpcomingMovies();
+    setUpComing(response);
+  };
+
+  useEffect(() => {
+    fetchTrending();
+    fetchTopRated();
+    fetchUpcoming();
+  }, []);
 
   return (
     <View className="flex-1 bg-neutral-800">
